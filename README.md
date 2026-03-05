@@ -84,7 +84,7 @@ XGBoost was selected as the final model. Class imbalance was handled using SMOTE
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/Phantom074/customer-churn-prediction.git
+git clone https://github.com/phantom074/customer-churn-prediction.git
 cd customer-churn-prediction
 
 # 2. Install dependencies
@@ -113,9 +113,9 @@ streamlit run app/streamlit_app.py
 
 ## Author
 
-**Phantom074**  
+**Mukul**  
 B.Tech Final Year | Data Science Enthusiast  
-[GitHub](https://github.com/Phantom074)
+[GitHub](https://github.com/phantom074)
 
 ---
 
