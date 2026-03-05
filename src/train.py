@@ -1,10 +1,3 @@
-"""
-train.py
-========
-Model training pipeline: Logistic Regression → Random Forest → XGBoost
-Author: Mukul (github.com/phantom074)
-"""
-
 import pandas as pd
 import numpy as np
 import joblib
@@ -38,7 +31,6 @@ def split_data(df: pd.DataFrame, target: str, test_size: float = 0.2, random_sta
 
 
 def apply_smote(X_train, y_train, random_state: int = 42):
-    """Handle class imbalance using SMOTE."""
     logger.info(f"Before SMOTE: {y_train.value_counts().to_dict()}")
     sm = SMOTE(random_state=random_state)
     X_res, y_res = sm.fit_resample(X_train, y_train)
@@ -47,7 +39,6 @@ def apply_smote(X_train, y_train, random_state: int = 42):
 
 
 def evaluate_model(model, X_test, y_test, model_name: str) -> dict:
-    """Evaluate a trained model and return metrics dict."""
     y_pred = model.predict(X_test)
     y_prob = model.predict_proba(X_test)[:, 1]
 
@@ -70,17 +61,14 @@ def evaluate_model(model, X_test, y_test, model_name: str) -> dict:
 
 
 def train_all_models(X_train, y_train, X_test, y_test, random_state: int = 42) -> dict:
-    """Train Logistic Regression, Random Forest, and XGBoost. Return all metrics."""
     results = {}
 
-    # 1. Logistic Regression (baseline)
     logger.info("Training Logistic Regression...")
     lr = LogisticRegression(max_iter=1000, random_state=random_state, class_weight="balanced")
     lr.fit(X_train, y_train)
     results["logistic_regression"] = {"model": lr, "metrics": evaluate_model(lr, X_test, y_test, "Logistic Regression")}
     joblib.dump(lr, "models/logistic_regression.pkl")
 
-    # 2. Random Forest
     logger.info("Training Random Forest...")
     rf = RandomForestClassifier(
         n_estimators=200,
@@ -93,7 +81,6 @@ def train_all_models(X_train, y_train, X_test, y_test, random_state: int = 42) -
     results["random_forest"] = {"model": rf, "metrics": evaluate_model(rf, X_test, y_test, "Random Forest")}
     joblib.dump(rf, "models/random_forest.pkl")
 
-    # 3. XGBoost (best performer)
     logger.info("Training XGBoost...")
     scale_pos_weight = (y_train == 0).sum() / (y_train == 1).sum()
     xgb = XGBClassifier(
@@ -116,14 +103,12 @@ def train_all_models(X_train, y_train, X_test, y_test, random_state: int = 42) -
 
 
 def get_best_model(results: dict) -> tuple:
-    """Return the best model based on AUC-ROC score."""
     best_name = max(results, key=lambda k: results[k]["metrics"]["roc_auc"])
     logger.info(f"Best model: {best_name} (AUC: {results[best_name]['metrics']['roc_auc']})")
     return best_name, results[best_name]["model"]
 
 
 if __name__ == "__main__":
-    # Quick run example
     import sys
     import os
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))

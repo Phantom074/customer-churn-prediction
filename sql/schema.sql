@@ -1,16 +1,9 @@
--- ============================================
--- Customer Churn Prediction - PostgreSQL Schema
--- Author: Mukul (github.com/phantom074)
--- ============================================
 
 DROP TABLE IF EXISTS churn_predictions CASCADE;
 DROP TABLE IF EXISTS support_tickets CASCADE;
 DROP TABLE IF EXISTS transactions CASCADE;
 DROP TABLE IF EXISTS customers CASCADE;
 
--- ============================================
--- CUSTOMERS TABLE
--- ============================================
 CREATE TABLE customers (
     customer_id         VARCHAR(20) PRIMARY KEY,
     gender              VARCHAR(10),
@@ -36,9 +29,6 @@ CREATE TABLE customers (
     created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- ============================================
--- TRANSACTIONS TABLE
--- ============================================
 CREATE TABLE transactions (
     transaction_id      SERIAL PRIMARY KEY,
     customer_id         VARCHAR(20) REFERENCES customers(customer_id),
@@ -49,9 +39,6 @@ CREATE TABLE transactions (
     created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- ============================================
--- SUPPORT TICKETS TABLE
--- ============================================
 CREATE TABLE support_tickets (
     ticket_id           SERIAL PRIMARY KEY,
     customer_id         VARCHAR(20) REFERENCES customers(customer_id),
@@ -63,9 +50,6 @@ CREATE TABLE support_tickets (
     created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- ============================================
--- CHURN PREDICTIONS TABLE
--- ============================================
 CREATE TABLE churn_predictions (
     prediction_id       SERIAL PRIMARY KEY,
     customer_id         VARCHAR(20) REFERENCES customers(customer_id),
@@ -76,9 +60,6 @@ CREATE TABLE churn_predictions (
     top_reason          TEXT
 );
 
--- ============================================
--- INDEXES
--- ============================================
 CREATE INDEX idx_customers_churn    ON customers(churn);
 CREATE INDEX idx_customers_contract ON customers(contract);
 CREATE INDEX idx_customers_tenure   ON customers(tenure);
@@ -86,9 +67,6 @@ CREATE INDEX idx_transactions_cust  ON transactions(customer_id);
 CREATE INDEX idx_tickets_cust       ON support_tickets(customer_id);
 CREATE INDEX idx_predictions_cust   ON churn_predictions(customer_id);
 
--- ============================================
--- VIEWS
--- ============================================
 CREATE VIEW v_churn_by_segment AS
 SELECT
     contract,

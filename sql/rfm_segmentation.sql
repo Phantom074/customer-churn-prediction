@@ -1,10 +1,3 @@
--- ============================================
--- RFM Segmentation using Window Functions
--- Author: Mukul (github.com/phantom074)
--- R = Recency   (how recently did they transact?)
--- F = Frequency (how often do they transact?)
--- M = Monetary  (how much do they spend?)
--- ============================================
 
 WITH rfm_base AS (
     SELECT

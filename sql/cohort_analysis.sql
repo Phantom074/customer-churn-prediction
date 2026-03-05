@@ -1,9 +1,4 @@
--- ============================================
--- Cohort Retention Analysis
--- Author: Mukul (github.com/phantom074)
--- ============================================
 
--- Monthly Churn Rate Over Time
 SELECT
     DATE_TRUNC('month', created_at)                                         AS month,
     COUNT(*)                                                                AS total_customers,
@@ -13,10 +8,6 @@ FROM customers
 GROUP BY DATE_TRUNC('month', created_at)
 ORDER BY month;
 
--- ============================================
--- Tenure Cohort Analysis
--- Buckets customers by how long they've been with the company
--- ============================================
 SELECT
     CASE
         WHEN tenure BETWEEN 0  AND 12  THEN '0-12 months'
@@ -33,9 +24,6 @@ FROM customers
 GROUP BY tenure_bucket
 ORDER BY MIN(tenure);
 
--- ============================================
--- Rolling 3-Month Churn Rate (Window Function)
--- ============================================
 WITH monthly_stats AS (
     SELECT
         DATE_TRUNC('month', created_at)                                             AS month,
@@ -54,9 +42,6 @@ SELECT
 FROM monthly_stats
 ORDER BY month;
 
--- ============================================
--- High Risk Customers (Top 10%)
--- ============================================
 WITH churn_scores AS (
     SELECT
         c.customer_id,
