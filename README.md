@@ -209,7 +209,7 @@ Other SQL analyses: RFM segmentation, churn by service tier, revenue at risk, li
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/YOUR_USERNAME/customer-churn-prediction.git
+git clone https://github.com/Phantom074/customer-churn-prediction.git
 cd customer-churn-prediction
 ```
 
