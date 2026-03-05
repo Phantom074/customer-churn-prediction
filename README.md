@@ -157,10 +157,7 @@ psql -d churn_db -f sql/schema.sql
 ## Author
 
 **Mukul**  
-<<<<<<< HEAD
 Data Science Enthusiast  
-=======
->>>>>>> b4905399ec98dc6347b3e3605e1a37b7ac675cd5
 [GitHub](https://github.com/phantom074)
 
 ---
