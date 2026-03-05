@@ -114,7 +114,6 @@ streamlit run app/streamlit_app.py
 ## Author
 
 **Mukul**  
-B.Tech Final Year | Data Science Enthusiast  
 [GitHub](https://github.com/phantom074)
 
 ---
