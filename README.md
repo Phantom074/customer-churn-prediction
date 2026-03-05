@@ -1,22 +1,41 @@
 # Customer Churn Prediction & Analytics Platform
 
-An end-to-end Data Science project covering SQL analytics, exploratory data analysis, machine learning, model explainability (SHAP), and an interactive business dashboard.
+An end-to-end Data Science project that predicts which customers will leave a telecom/banking company, explains why they might leave, and provides actionable retention recommendations.
 
-![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)
+![Python](https://img.shields.io/badge/Python-3.14+-blue?logo=python)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-336791?logo=postgresql)
-![XGBoost](https://img.shields.io/badge/XGBoost-Model-red)
-![Streamlit](https://img.shields.io/badge/Streamlit-App-FF4B4B?logo=streamlit)
-![Power BI](https://img.shields.io/badge/PowerBI-Dashboard-F2C811?logo=powerbi)
-![Status](https://img.shields.io/badge/Status-Active-brightgreen)
+![XGBoost](https://img.shields.io/badge/XGBoost-2.0-red)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.30+-FF4B4B?logo=streamlit)
+![Status](https://img.shields.io/badge/Status-In%20Progress-yellow)
 
 ---
 
 ## Overview
 
-Customer churn is one of the most critical business problems across industries. This project builds a churn prediction system that identifies customers likely to leave, explains why using SHAP values, and presents insights through a Power BI dashboard and a live Streamlit app.
+Customer churn is one of the most critical business problems across industries. Acquiring a new customer costs 5–7x more than retaining an existing one. This project builds a system that:
 
-**Datasets:** IBM Telco Churn (7,043 customers) + Bank Customer Churn (10,000 customers)  
-**Target Variable:** `Churn` (Binary: Yes / No)
+- Predicts which customers are likely to leave — **before they actually leave**
+- Explains **why** a customer is at risk using key risk factors
+- Gives the retention team **actionable recommendations** to intervene in time
+
+**Datasets:** IBM Telco Churn + Bank Customer Churn (Kaggle)  
+**Target Variable:** `Churn` (0 = Stay, 1 = Will Churn)  
+**Class Distribution:** ~73% Stay, ~27% Churn
+
+---
+
+## Current Status
+
+| Component | Status |
+|---|---|
+| Project structure & documentation | ✅ Complete |
+| Streamlit prediction app (rule-based) | ✅ Complete |
+| SQL schema & analytics queries | ✅ Complete |
+| EDA notebooks | 🔄 In Progress |
+| Feature engineering | 🔄 In Progress |
+| XGBoost model training | ⏳ Pending |
+| Model connected to Streamlit app | ⏳ Pending |
+| Power BI dashboard | ⏳ Pending |
 
 ---
 
@@ -24,28 +43,29 @@ Customer churn is one of the most critical business problems across industries. 
 
 ```
 customer-churn-prediction/
-├── data/
-│   ├── raw/                        # Original CSVs
-│   └── processed/                  # Cleaned data
-├── sql/
-│   ├── schema.sql
-│   ├── cohort_analysis.sql
-│   └── rfm_segmentation.sql
-├── notebooks/
-│   ├── 01_eda_telco.ipynb
-│   ├── 02_eda_bank.ipynb
-│   ├── 03_feature_engineering.ipynb
-│   ├── 04_model_building.ipynb
-│   └── 05_shap_explainability.ipynb
-├── src/
-│   ├── preprocess.py
-│   ├── train.py
-│   └── predict.py
-├── models/                         # Saved model files (.pkl)
 ├── app/
-│   └── streamlit_app.py
-├── dashboard/
-│   └── churn_dashboard.pbix
+│   └── streamlit_app.py            # Live prediction web app ✅
+├── data/
+│   └── raw/
+│       └── telco_churn.csv         # IBM Telco dataset (Kaggle)
+├── src/
+│   ├── preprocess.py               # Data cleaning functions
+│   ├── features.py                 # Feature engineering pipeline
+│   ├── train.py                    # Model training (LR → RF → XGBoost)
+│   └── predict.py                  # Inference & SHAP explanation
+├── notebooks/
+│   ├── 01_eda_telco.py             # Exploratory Data Analysis
+│   ├── 03_feature_engineering.py   # Feature creation walkthrough
+│   ├── 04_model_building.py        # Model training & evaluation
+│   └── 05_shap_explainability.py   # SHAP feature importance
+├── sql/
+│   ├── schema.sql                  # PostgreSQL table definitions
+│   ├── cohort_analysis.sql         # Retention cohort queries
+│   ├── rfm_segmentation.sql        # RFM scoring with window functions
+│   └── churn_kpis.sql              # Business KPI queries
+├── models/                         # Trained model files (.pkl)
+├── dashboard/                      # Power BI dashboard (.pbix)
+├── reports/                        # EDA charts & model reports
 ├── requirements.txt
 ├── config.yaml
 └── README.md
@@ -57,26 +77,46 @@ customer-churn-prediction/
 
 | Category | Tools |
 |---|---|
-| Language | Python 3.11 |
+| Language | Python 3.14+ |
 | Database | PostgreSQL 15 |
-| Data Processing | Pandas, NumPy |
+| Data Processing | Pandas 2.2+, NumPy |
 | Visualization | Matplotlib, Seaborn, Plotly |
-| Machine Learning | Scikit-learn, XGBoost |
-| Explainability | SHAP |
-| Web App | Streamlit |
+| Machine Learning | Scikit-learn 1.4+, XGBoost 2.0+ |
+| Explainability | SHAP 0.44+ |
+| Web App | Streamlit 1.30+ |
 | Dashboard | Power BI |
 
 ---
 
-## Models & Results
+## Streamlit App (Current)
 
-| Model | Accuracy | AUC-ROC |
-|---|---|---|
-| Logistic Regression | ~80% | ~0.84 |
-| Random Forest | ~82% | ~0.87 |
-| XGBoost ✅ | ~85% | ~0.91 |
+The app currently uses a **rule-based scoring system** derived directly from EDA insights. It will be upgraded to use the trained XGBoost model once training is complete.
 
-XGBoost was selected as the final model. Class imbalance was handled using SMOTE.
+**Input fields:**
+- Tenure (months), Contract Type, Internet Service
+- Monthly Charges (₹), Payment Method, Senior Citizen
+
+**Output:**
+- Churn Probability (%)
+- Risk Level: 🔴 High / 🟡 Medium / 🟢 Low
+- Key risk factors driving the prediction
+- Business recommendation for the retention team
+
+**Scoring logic (EDA-based):**
+```
+Score = contract_type + payment_method + internet_type + tenure + charges + age
+Churn Probability = 10% + (score × 9%)
+```
+
+---
+
+## Key Business Insights (From EDA)
+
+1. Month-to-month contracts show **3x higher churn** than yearly contracts
+2. Electronic check users churn **40% more** than auto-pay users
+3. Customers with tenure **under 12 months** are the highest risk segment
+4. Fiber optic users churn more **despite paying a premium**
+5. Monthly charges above **₹1500** correlate with increased churn probability
 
 ---
 
@@ -90,31 +130,34 @@ cd customer-churn-prediction
 # 2. Install dependencies
 pip install -r requirements.txt
 
-# 3. Set up PostgreSQL
+# 3. Launch the Streamlit app
+streamlit run app/streamlit_app.py
+
+# Access at: http://localhost:8501
+```
+
+**To set up PostgreSQL (optional):**
+```bash
 createdb churn_db
 psql -d churn_db -f sql/schema.sql
-
-# 4. Run notebooks in order (01 → 05)
-
-# 5. Launch the Streamlit app
-streamlit run app/streamlit_app.py
 ```
 
 ---
 
-## Key Insights
+## Roadmap
 
-- Month-to-month contract customers churn **3x more** than yearly contract customers
-- Customers with tenure under 12 months are the **highest risk segment**
-- Customers using **3+ services churn 40% less** — upselling reduces churn
-- Electronic check payment users show significantly higher churn rates
+- [ ] Run and finalize EDA notebooks with full visualizations
+- [ ] Train XGBoost model on IBM Telco dataset
+- [ ] Connect trained model to Streamlit app (replace rule-based logic)
+- [ ] Add SHAP explanation chart inside the app
+- [ ] Build Power BI dashboard connected to PostgreSQL
 
 ---
 
 ## Author
 
 **Mukul**  
-B.Tech Final Year | Data Science Enthusiast  
+Data Science Enthusiast  
 [GitHub](https://github.com/phantom074)
 
 ---
