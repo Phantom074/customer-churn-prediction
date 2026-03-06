@@ -6,6 +6,7 @@ An end-to-end Data Science project that predicts which customers will leave a te
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-336791?logo=postgresql)
 ![XGBoost](https://img.shields.io/badge/XGBoost-2.0-red)
 ![Streamlit](https://img.shields.io/badge/Streamlit-1.30+-FF4B4B?logo=streamlit)
+![PowerBI](https://img.shields.io/badge/PowerBI-Dashboard-F2C811?logo=powerbi)
 ![Status](https://img.shields.io/badge/Status-In%20Progress-yellow)
 
 ---
@@ -31,11 +32,11 @@ Customer churn is one of the most critical business problems across industries. 
 | Project structure & documentation | ✅ Complete |
 | Streamlit prediction app (rule-based) | ✅ Complete |
 | SQL schema & analytics queries | ✅ Complete |
+| Power BI dashboard | ✅ Complete |
 | EDA notebooks | 🔄 In Progress |
 | Feature engineering | 🔄 In Progress |
 | XGBoost model training | ⏳ Pending |
 | Model connected to Streamlit app | ⏳ Pending |
-| Power BI dashboard | ⏳ Pending |
 
 ---
 
@@ -64,7 +65,9 @@ customer-churn-prediction/
 │   ├── rfm_segmentation.sql        # RFM scoring with window functions
 │   └── churn_kpis.sql              # Business KPI queries
 ├── models/                         # Trained model files (.pkl)
-├── dashboard/                      # Power BI dashboard (.pbix)
+├── dashboard/
+│   ├── churn_dashboard.pbix        # Power BI dashboard ✅
+│   └── dashboard_preview.png       # Dashboard screenshot ✅
 ├── reports/                        # EDA charts & model reports
 ├── requirements.txt
 ├── config.yaml
@@ -85,6 +88,21 @@ customer-churn-prediction/
 | Explainability | SHAP 0.44+ |
 | Web App | Streamlit 1.30+ |
 | Dashboard | Power BI |
+
+---
+
+## Power BI Dashboard
+
+Built on the IBM Telco dataset (7,043 customers) with 6 visuals:
+
+- **KPI Cards** — Total Customers, Churn Rate (26.5%), Monthly Revenue at Risk (₹1.39L), Churned Customers
+- **Churn by Contract Type** — Month-to-month shows highest churn at ~42%
+- **Churn by Payment Method** — Electronic check users churn at 45%
+- **Churn by Tenure** — Downward trend confirms new customers are highest risk
+- **Churn by Internet Service** — Fiber optic users dominate churned segment
+- **At-Risk Customers Table** — Filtered to Churn = Yes, sorted by monthly charges
+
+> 📁 See `dashboard/churn_dashboard.pbix`
 
 ---
 
@@ -110,13 +128,14 @@ Churn Probability = 10% + (score × 9%)
 
 ---
 
-## Key Business Insights (From EDA)
+## Key Business Insights (From Dashboard & EDA)
 
 1. Month-to-month contracts show **3x higher churn** than yearly contracts
-2. Electronic check users churn **40% more** than auto-pay users
+2. Electronic check users churn at **45%** — highest of all payment methods
 3. Customers with tenure **under 12 months** are the highest risk segment
 4. Fiber optic users churn more **despite paying a premium**
-5. Monthly charges above **₹1500** correlate with increased churn probability
+5. Monthly charges above **₹1,500** correlate with increased churn probability
+6. **₹1.39L monthly revenue** is at risk from churned customers
 
 ---
 
@@ -142,17 +161,6 @@ createdb churn_db
 psql -d churn_db -f sql/schema.sql
 ```
 
----
-
-## Roadmap
-
-- [ ] Run and finalize EDA notebooks with full visualizations
-- [ ] Train XGBoost model on IBM Telco dataset
-- [ ] Connect trained model to Streamlit app (replace rule-based logic)
-- [ ] Add SHAP explanation chart inside the app
-- [ ] Build Power BI dashboard connected to PostgreSQL
-
----
 
 ## Author
 
