@@ -25,27 +25,12 @@ Customer churn is one of the most critical business problems across industries. 
 
 ---
 
-## Current Status
-
-| Component | Status |
-|---|---|
-| Project structure & documentation | ✅ Complete |
-| Streamlit prediction app (rule-based) | ✅ Complete |
-| SQL schema & analytics queries | ✅ Complete |
-| Power BI dashboard | ✅ Complete |
-| EDA notebooks | 🔄 In Progress |
-| Feature engineering | 🔄 In Progress |
-| XGBoost model training | ⏳ Pending |
-| Model connected to Streamlit app | ⏳ Pending |
-
----
-
 ## Project Structure
 
 ```
 customer-churn-prediction/
 ├── app/
-│   └── streamlit_app.py            # Live prediction web app ✅
+│   └── streamlit_app.py            # Live prediction web app
 ├── data/
 │   └── raw/
 │       └── telco_churn.csv         # IBM Telco dataset (Kaggle)
@@ -66,8 +51,8 @@ customer-churn-prediction/
 │   └── churn_kpis.sql              # Business KPI queries
 ├── models/                         # Trained model files (.pkl)
 ├── dashboard/
-│   ├── churn_dashboard.pbix        # Power BI dashboard ✅
-│   └── dashboard_preview.png       # Dashboard screenshot ✅
+│   ├── churn_dashboard.pbix        # Power BI dashboard
+│   └── dashboard_preview.png       # Dashboard screenshot
 ├── reports/                        # EDA charts & model reports
 ├── requirements.txt
 ├── config.yaml
@@ -106,9 +91,9 @@ Built on the IBM Telco dataset (7,043 customers) with 6 visuals:
 
 ---
 
-## Streamlit App (Current)
+## Streamlit App
 
-The app currently uses a **rule-based scoring system** derived directly from EDA insights. It will be upgraded to use the trained XGBoost model once training is complete.
+The app uses a **rule-based scoring system** derived directly from EDA insights, to be upgraded to the trained XGBoost model.
 
 **Input fields:**
 - Tenure (months), Contract Type, Internet Service
@@ -128,7 +113,7 @@ Churn Probability = 10% + (score × 9%)
 
 ---
 
-## Key Business Insights (From Dashboard & EDA)
+## Key Business Insights
 
 1. Month-to-month contracts show **3x higher churn** than yearly contracts
 2. Electronic check users churn at **45%** — highest of all payment methods
@@ -160,8 +145,6 @@ streamlit run app/streamlit_app.py
 createdb churn_db
 psql -d churn_db -f sql/schema.sql
 ```
-
-
 ## Author
 
 **Mukul**  
