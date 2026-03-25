@@ -128,7 +128,7 @@ Churn Probability = 10% + (score × 9%)
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/phantom074/customer-churn-prediction.git
+git clone https://github.com/mukuldhattarwal/customer-churn-prediction.git
 cd customer-churn-prediction
 
 # 2. Install dependencies
@@ -149,7 +149,7 @@ psql -d churn_db -f sql/schema.sql
 
 **Mukul**  
 Data Science Enthusiast  
-[GitHub](https://github.com/phantom074)
+[GitHub](https://github.com/mukuldhattarwal)
 
 ---
 
